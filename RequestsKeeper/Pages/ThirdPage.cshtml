@@ -1,0 +1,42 @@
+﻿@page
+@model ThirdPageModel
+@{
+    ViewData["Title"] = "Регистрация";
+}
+<style>
+    .ali
+    {
+        padding: 50px;
+        background: #ccc;
+        position: fixed; top: 50%; left: 50%;
+        -webkit-transform: translate(-50%, -50%);
+        -ms-transform: translate(-50%, -50%);
+        transform: translate(-50%, -50%);
+    }
+    .font
+    {
+        font-size:large;
+    }
+ </style>
+ <div class="ali">
+  <h3>Регистрация</h3>
+<form method="post">
+  <label for="inputEmail3" class="font col-form-label">Электронная почта</label>
+  <div > 
+    <div class="col-sm-12">
+      <input type="email" class="form-control" id="inputEmail3" name="email">
+      <label>@Model.Exist</label>
+    </div>
+  </div>
+  <label for="inputPassword3" class="font col-sm-2 col-form-label">Пароль</label>
+  <div class="row mb-3">
+    
+    <div class="col-sm-12">
+      <input type="password" class="form-control" id="inputPassword3" name="password">
+    </div>
+          <label >@Model.Message</label>
+  </div>
+  
+  <button type="submit" class="btn btn-primary">Зарегистрироваться</button>
+</form>
+</div>

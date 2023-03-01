@@ -1,0 +1,258 @@
+﻿@page
+@model RequestsKeeper.Pages.CreatePersonalRequestModel
+@{
+    ViewData["Title"] = "Заявка на личное посещение";
+}
+<style>
+    .font
+    {
+        font-size:xx-large
+    }
+    .fontgrey
+    {
+        color: dimgrey;
+    }
+    .indent
+    {
+        position:relative;
+        top: 30%;
+    }
+</style>
+
+<img src="Images/Visitor.png" width="100" height="100"/>
+<label class="position-absolute font">RequestKeeper</label>
+
+<div class="container text-center">
+    <h3>Форма записи на посещение мероприятия</h3>
+  <div class="row">
+    <div class="col-5">
+      <div class="card">
+          <div class="card-header bg-warning">Информация для пропуска</div>
+          <div class="card-body bg-light"">
+            <div class="row">
+                <div class="col">Срок действия заявки</div>
+            </div>
+            <div class="row">
+                <div class="col">с*
+                    <input class="col-md-10" type="date"/>
+                </div>
+                <div class="col">по
+                    <input class="col-md-10" type="date"/>
+                </div>
+            </div>
+            <div class="col">Цель посещения:</div>
+            <div class="row">
+                <input type="text"/>
+            </div>
+          </div>
+      </div>
+    </div>
+    <div class="col-7">
+      <div class="card">
+        <div class="card-header bg-warning">Принимающая сторона</div>
+          <div class="card-body bg-light"">
+            <div class="row">
+                <div class="row">Подразделение*</div>
+            </div>
+            <div class="row">
+                <select class="combobox"></select>
+            </div>
+            <div class="row">ФИО*</div>
+            <div class="row">
+                <select class="combobox"></select>
+            </div>
+          </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="row mt-3">
+    <div class="col">
+        
+      <div class="card">
+  <div class="card-header bg-warning">Информация о посетителе</div>
+  <div class="card-body bg-light">
+      <div class="row">
+
+          @*<div class="col">
+              <div class="row">Фамилия*:</div>
+              <div class="row mt-3">Имя*:</div>
+              <div class="row mt-3">Отчество:</div>
+              <div class="row mt-3">Телефон:</div>
+              <div class="row mt-3">Email*:</div>
+          </div>
+
+          <div class="col">
+              
+                  <input type="text" />
+              
+              <div class="col mt-2">
+                  <input class="mt-2" type="text"/>
+              </div>
+              <div class="col mt-2">
+                  <input type="text"/>
+              </div>
+              <div class="col mt-2">
+                  <input type="text"/>
+              </div>
+              <div class="col mt-2">
+                  <input type="text"/>
+              </div>
+          </div>
+
+          <div class="col">
+              <div class="row">Организация:</div>
+              <div class="row mt-3">Примечание:</div>
+              <div class="row mt-3">Дата рождения:</div>
+              <div class="row mt-3">Серия:</div>
+              <div class="row mt-3">Номер:</div>
+          </div>
+
+          <div class="col">
+              <div class="col">
+                   <input type="text"/>
+              </div>
+              <div class="col mt-2">
+                  <input type="text"/>
+              </div>
+              <div class="col mt-2">
+                  <input class="col-md-10" type="date"/>
+              </div>
+              <div class="col mt-2">
+                  <input type="text"/>
+              </div>
+              <div class="col mt-2">
+                  <input type="text"/>
+              </div>
+          </div>*@
+          <div class="col-5">
+              <div class="row mb-1">
+                  <div class="col-4">
+                      <label class="form-label">Фамилия*:</label>
+                      
+                  </div>
+                  <div class="col-8">
+                      <input class="form-control" type="text" />
+                  </div>
+              </div>
+
+              <div class="row mb-1">
+                  <div class="col-4">
+                      Имя*:
+                  </div>
+                  <div class="col-8">
+                      <input class="form-control" type="text" />
+                  </div>
+              </div>
+
+              <div class="row mb-1">
+                  <div class="col-4">
+                      Отчество:
+                  </div>
+                  <div class="col-8">
+                      <input class="form-control" type="text" />
+                  </div>
+              </div>
+
+              <div class="row mb-1">
+                  <div class="col-4">
+                      Телефон:
+                  </div>
+                  <div class="col-8">
+                      <input class="form-control" type="text" />
+                  </div>
+              </div>
+
+              <div class="row mb-1">
+                  <div class="col-4">
+                      Email*:
+                  </div>
+                  <div class="col-8">
+                      <input class="form-control" type="text" />
+                  </div>
+              </div>
+
+          </div>
+
+          <div class="col-5">
+              <div class="row mb-1">
+                  <div class="col-4">
+                      Организация:
+                  </div>
+                  <div class="col-8">
+                      <input class="form-control" type="text"/>
+                  </div>
+              </div>
+
+              <div class="row mb-1">
+                  <div class="col-4">
+                      Примечание*:
+                  </div>
+                  <div class="col-8">
+                      <input class="form-control" type="text"/>
+                  </div>
+              </div>
+
+              <div class="row mb-1">
+                  <div class="col-4">
+                      Дата рождения*:
+                  </div>
+                  <div class="col-8">
+                      <input type="date" class="form-control" type="text"/>
+                  </div>
+              </div>
+
+              <div class="row mb-1">
+                  <div class="col-4">
+                      Серия*:
+                  </div>
+                  <div class="col-8">
+                      <input class="form-control" type="text"/>
+                  </div>
+              </div>
+
+              <div class="row mb-1" >
+                  <div class="col-4">
+                      Номер*:
+                  </div>
+                  <div class="col-8">
+                      <input class="form-control" type="text"/>
+                  </div>
+              </div>
+          </div>
+
+          <div class="col-2">
+              <div class="col">
+                  <img class="img-fluid" src="~/Images/Visitor.png"/>
+              </div>
+              
+              <input type="submit" class="btn btn-outline-warning mt-2" value="Загрузить фото"/>
+          </div>
+      </div>
+    
+  </div>
+</div>
+
+  </div>
+
+  <div class="row mt-3">
+    <div class="col">
+      <div class="card">
+  <div class="card-header bg-warning">Прикрепляемые документы</div>
+  <div class="card-body bg-light">
+      
+    <input class="btn fontgrey" type="submit" value="ПРИКРЕПИТЬ ФАЙЛ"/>
+   
+  </div>
+</div>
+    </div>
+
+    <div class="col">
+      <div class="card-body indent">
+        <input class="btn fontgrey" type="submit" value="Очистить форму"/>
+        <input type="submit" class="btn btn-outline-warning" value="Оформить заявку"/>
+      </div>
+    </div>
+  </div>
+    
+</div>

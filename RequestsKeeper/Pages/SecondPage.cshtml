@@ -1,0 +1,49 @@
+﻿@page
+@using RequestsKeeper.Model
+@model RequestsKeeper.Pages.SecondPageModel
+@{
+     ViewData["Title"] = "Список ваших заявок";
+}
+<style>
+    .a
+    {
+        text-align:left
+        
+    }
+</style>
+<a class="btn btn-primary position-absolute a" asp-page="/CreateRequest">Подать завку</a>
+<div class="text-center">
+<h1>Список заявок на посещение</h1>
+
+<table class="table">
+  <thead>
+    <tr>
+      <th scope="col">#</th>
+      <th scope="col">Тип</th>
+      <th scope="col">Дата начала</th>
+      <th scope="col">Дата конца</th>
+      <th scope="col">Принимающее подразделение</th>
+      <th scope="col">Работник подразделения</th>
+      <th scope="col">Статус</th>
+      <th scope="col">Причина</th>
+      <th scope="col">Посетитель</th>
+    </tr>
+  </thead>
+  <tbody>
+      @foreach (Request request in @Model.Requests)
+      {
+      <tr>
+        <th scope="row">@request.Id</th>
+        <td>@request.TypeRequest.Name</td>
+        <td>@request.StartDate</td>
+        <td>@request.FinishDate</td>
+        <td>@request.Worker.SubDivision.Name</td>
+        <td>@request.Worker.Surname</td>
+        <td>@request.Status.Name</td>
+        <td>@request.Cause</td>
+        <td>@request.Users.Email</td>
+      </tr>
+      }      
+  </tbody>
+</table>
+</div>
