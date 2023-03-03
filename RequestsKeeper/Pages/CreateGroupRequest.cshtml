@@ -1,12 +1,17 @@
 ﻿@page
-@model RequestsKeeper.Pages.CreatePersonalRequestModel
+@using RequestsKeeper.Model
+@model RequestsKeeper.Pages.CreateGroupRequestModel
 @{
-    ViewData["Title"] = "Заявка на личное посещение";
+    ViewData["Title"] = "Заявка на групповое посещение";
 }
 <style>
     .font
     {
         font-size:xx-large
+    }
+    .font-small
+    {
+        font-size:xx-small;
     }
     .fontgrey
     {
@@ -15,6 +20,7 @@
     .indent
     {
         position:relative;
+        left:20%;
         top: 30%;
     }
 </style>
@@ -67,7 +73,7 @@
   </div>
 
   <div class="row mt-3">
-    <div class="col">
+    <div class="col-9">
         
       <div class="card">
   <div class="card-header bg-warning">Информация о посетителе</div>
@@ -166,26 +172,49 @@
                       <input asp-for="@Model.Visitor.PassportNumber" class="form-control" type="text"/>
                   </div>
               </div>
+              <input class="btn fontgrey small" type="submit" value="Добавить пользователя"/>
           </div>
 
-          <div class="col-2">
-              <div class="col">
-                  <input type="hidden" name="ImagePath" value="@Model.ImagePath"/>
-                  <input type="hidden" asp-for="Visitor.Photo" value="@Model.Visitor.Photo"/>
-                  <img class="img-fluid" src="@Model.ImagePath"/>
-              </div>
-              
-              <input onchange="changeSubvision()" type="file" name="upploadImage" class="btn btn-outline-warning mt-2" value="Загрузить фото"/>
-          </div>
+          
       </div>
     
   </div>
 </div>
 
   </div>
+  <div class="col-3">
+      <div class="card">
+          <div class="card-header bg-warning">
+              <label>Список посетителей</label>
+          </div>
+          <div class="card-body font-small">
+              <table class="table">
+                  <thead>
+                      <tr>
+                      <th>№</th>
+                      <th>ФИО</th>
+                      <th>Контакты</th>
+                      <th>Фотография</th>
+                      </tr>
+                  </thead>
+                  <tbody>
+                      @foreach (Visitor visitor in @Model.Visitors)
+                      {
+                      <tr>
+                        <th scope="row">@visitor.Id</th>
+                        <td>@visitor.Surname</td>
+                        <td>@visitor.Email</td>
+                        <td>@visitor.Photo</td>
+                      </tr>
+                      } 
+                  </tbody>
+          </table>
+          </div>
+      </div>
+  </div>
 
   <div class="row mt-3">
-    <div class="col">
+    <div class="col-8">
       <div class="card">
   <div class="card-header bg-warning">Прикрепляемые документы</div>
   <div class="card-body bg-light">
@@ -196,8 +225,8 @@
 </div>
     </div>
     
-    <div class="col">
-      <div class="card-body indent">
+    <div class="col-4">
+      <div class="card-body">
         <input class="btn fontgrey" type="submit" value="Очистить форму"/>
         <input type="submit" class="btn btn-outline-warning" name="filldata" value="Оформить заявку"/>
       </div>

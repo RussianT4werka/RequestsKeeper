@@ -1,15 +1,15 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.EntityFrameworkCore;
 using RequestsKeeper.DB;
 using RequestsKeeper.Model;
 using RequestsKeeper.Tools;
 
 namespace RequestsKeeper.Pages
 {
-    public class CreatePersonalRequestModel : PageModel
+    public class CreateGroupRequestModel : PageModel
     {
+        public List<Visitor> Visitors { get; set; } = new List<Visitor>();
         [BindProperty]
         public Request Request { get; set; } = new Request();
 
@@ -30,12 +30,8 @@ namespace RequestsKeeper.Pages
         [BindProperty]
         public int WorkerId { get; set; }
         public string Message { get; private set; }
-        [BindProperty]
-        public string ImagePath { get; set; }
-        [BindProperty]
-        public string PhotoBytes { get; set; }
-
-        public CreatePersonalRequestModel(User502Context user502Context, IWebHostEnvironment appEnvironment)
+        
+        public CreateGroupRequestModel(User502Context user502Context, IWebHostEnvironment appEnvironment)
         {
             var subdivisions = user502Context.SubDivisions.ToList();
             SubDivisionList = new SelectList(subdivisions, nameof(SubDivision.Id), nameof(SubDivision.Name));
@@ -50,64 +46,38 @@ namespace RequestsKeeper.Pages
 
         public IActionResult OnPost(string handler, string filldata)
         {
-            if (filldata == null)
+            if(filldata == null)
             {
-                WorkerList = new SelectList(user502Context.Workers.Where(s => s.SubDivisionId == SubDivisionId).ToList(), nameof(Worker.Id), nameof(Worker.Surname));
-                var uploadedFile = base.Request.Form.Files.FirstOrDefault(s => s.ContentType == "image/jpeg");
-                if (uploadedFile != null)
-                {
-                    // путь к папке Files
-                    string path = "/Images/" + uploadedFile.FileName;
-                    // сохраняем файл в папку Files в каталоге wwwroot
-                    using (var fileStream = new FileStream(appEnvironment.WebRootPath + path, FileMode.Create))
-                    {
-                        uploadedFile.CopyTo(fileStream);
-                    }
-                    ImagePath = Url.Content(path);
-                }
-                return null;
+                WorkerList = new SelectList(user502Context.Workers.Where(s => s.SubDivisionId == SubDivisionId).ToList(), nameof(Worker.Id), nameof(Worker.Surname)); 
             }
             authUser = Session.GetVisitor(handler);
-            if (string.IsNullOrEmpty(Visitor.Surname) 
-                || string.IsNullOrEmpty(Visitor.Name) 
-                || string.IsNullOrEmpty(Visitor.Email) 
-                || !Visitor.Email.Contains('@') 
-                || (DateTime.Now-Visitor.DoB).Days/365<=16 
+
+            if (string.IsNullOrEmpty(Visitor.Surname)
+                || string.IsNullOrEmpty(Visitor.Name)
+                || string.IsNullOrEmpty(Visitor.Email)
+                || !Visitor.Email.Contains('@')
+                || (DateTime.Now - Visitor.DoB).Days / 365 <= 16
                 || string.IsNullOrEmpty(Visitor.PassportSeries)
-                || Visitor.PassportSeries.Length != 4 
+                || Visitor.PassportSeries.Length != 4
                 || string.IsNullOrEmpty(Visitor.PassportNumber)
                 || Visitor.PassportNumber.Length != 6
                 || string.IsNullOrEmpty(Visitor.Note)
-                || Request.StartDate.Day<=DateTime.Now.Day
-                || Request.StartDate.Day>DateTime.Now.Day+15
-                || Request.FinishDate.Day<Request.StartDate.Day
-                || Request.FinishDate.Day>Request.StartDate.Day+15
+                || Request.StartDate.Day <= DateTime.Now.Day
+                || Request.StartDate.Day > DateTime.Now.Day + 15
+                || Request.FinishDate.Day < Request.StartDate.Day
+                || Request.FinishDate.Day > Request.StartDate.Day + 15
                 || string.IsNullOrEmpty(Request.TargetVisit)
                 || WorkerId == 0
                 || base.Request.Form.Files.FirstOrDefault(s => s.ContentType == "application/pdf") == null)
             {
                 Message = "Поля заполнены неверно";
 
-                return null; 
+                return null;
             }
-
-            if (ImagePath != null)
-            {
-                using (var fs = new FileStream(appEnvironment.WebRootPath + ImagePath, FileMode.Open))
-                {
-                        Visitor.Photo = new byte[fs.Length];
-                        using (MemoryStream ms = new MemoryStream(Visitor.Photo))
-                        {
-                            fs.CopyTo(ms);
-                        }
-                }
-            }
-            var file = base.Request.Form.Files.First(s => s.ContentType == "application/pdf");
-            Visitor.ScanPassport = GetBytesFromFile(file);
             Request.UsersId = authUser.Id;
             Request.WorkerId = WorkerId;
             Request.StatusId = 1;
-            Request.TypeRequestId = 1;
+            Request.TypeRequestId = 2;
             authUser.Visitors.Add(Visitor);
             User user = user502Context.Users.ToList().First(s => s.Id == authUser.Id);
             user502Context.Entry(user).CurrentValues.SetValues(authUser);

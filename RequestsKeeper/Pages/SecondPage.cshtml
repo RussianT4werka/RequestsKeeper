@@ -11,7 +11,7 @@
         
     }
 </style>
-<a class="btn btn-primary position-absolute a" asp-page="/CreateRequest">Подать завку</a>
+<a class="btn btn-primary position-absolute a" asp-page="/CreateRequest" asp-page-handler="@Model.UserSession">Подать завку</a>
 <div class="text-center">
 <h1>Список заявок на посещение</h1>
 

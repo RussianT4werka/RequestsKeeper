@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.EntityFrameworkCore;
 using RequestsKeeper.DB;
 using RequestsKeeper.Tools;
 using System.Net;
@@ -28,7 +29,7 @@ namespace RequestsKeeper.Pages
                 Message = "Необходимо заполнить поля для авторизации";
                 return null;
             }
-            var user = user502Context.Users.FirstOrDefault(x => x.Login == login && x.Password == Hash.HashPass(password));
+            var user = user502Context.Users.Include(x => x.Visitors).FirstOrDefault(x => x.Login == login && x.Password == Hash.HashPass(password));
             if(user == null)
             {
                 Message = "Неверный логин или пароль";

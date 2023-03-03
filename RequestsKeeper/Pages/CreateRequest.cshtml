@@ -9,7 +9,7 @@
 <div class="text-center">
 <h1>Выбор типа заявки</h1>
 <p>
-    <a class="btn" asp-area="" asp-page="/CreatePersonalRequest"><img src="~/Images/Visitor.png" alt="Личное посещение"></a>
-    <a class="btn" asp-area="" asp-page="/CreateGroupRequest"><img src="~/Images/Visitors.png" alt="Групповое посещение"></a>
+    <a class="btn" asp-area="" asp-page="/CreatePersonalRequest" asp-page-handler="@Model.UserSession"><img src="~/Images/Visitor.png" alt="Личное посещение"></a>
+    <a class="btn" asp-area="" asp-page="/CreateGroupRequest" asp-page-handler="@Model.UserSession"><img src="~/Images/Visitors.png" alt="Групповое посещение"></a>
 </p>
 </div>

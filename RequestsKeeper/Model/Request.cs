@@ -9,9 +9,9 @@ public partial class Request
 
     public int TypeRequestId { get; set; }
 
-    public DateTime StartDate { get; set; }
+    public DateTime StartDate { get; set; } = DateTime.Now;
 
-    public DateTime FinishDate { get; set; }
+    public DateTime FinishDate { get; set; } = DateTime.Now;
 
     public string TargetVisit { get; set; } = null!;
 

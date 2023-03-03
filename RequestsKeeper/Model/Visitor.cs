@@ -15,11 +15,13 @@ public partial class Visitor
 
     public string? PhoneNumber { get; set; }
 
-    public DateTime DoB { get; set; }
+    public string Email { get; set; } = null!;
 
-    public int PassportSeries { get; set; }
+    public DateTime DoB { get; set; } = DateTime.Now;
 
-    public int PassportNumber { get; set; }
+    public string PassportSeries { get; set; } = null!;
+
+    public string PassportNumber { get; set; } = null!;
 
     public byte[]? Photo { get; set; }
 
@@ -29,9 +31,9 @@ public partial class Visitor
 
     public byte[]? ScanPassport { get; set; }
 
-    public int UsersId { get; set; }
+    public int? UsersId { get; set; }
 
-    public virtual User Users { get; set; } = null!;
+    public virtual User? Users { get; set; }
 
     public virtual ICollection<VisitorsRequest> VisitorsRequests { get; } = new List<VisitorsRequest>();
 
