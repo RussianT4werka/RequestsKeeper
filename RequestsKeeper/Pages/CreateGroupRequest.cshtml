@@ -48,7 +48,7 @@
             </div>
             <div class="col">Цель посещения:</div>
             <div class="row">
-                <input asp-for="@Model.Request.TargetVisit" type="text"/>
+                <input asp-for="@Model.Request.TargetVisit" value="@Model.Request.TargetVisit" type="text"/>
             </div>
           </div>
       </div>
@@ -85,7 +85,7 @@
                       <label class="form-label">Фамилия*:</label>
                   </div>
                   <div class="col-8">
-                      <input asp-for="@Model.Visitor.Surname" class="form-control" type="text" />
+                      <input asp-for="@Model.Visitor.Surname" value="@Model.Visitor.Surname" class="form-control" type="text" />
                   </div>
               </div>
 
@@ -94,7 +94,7 @@
                       Имя*:
                   </div>
                   <div class="col-8">
-                      <input asp-for="@Model.Visitor.Name" class="form-control" type="text" />
+                      <input asp-for="@Model.Visitor.Name" value="@Model.Visitor.Name" class="form-control" type="text" />
                   </div>
               </div>
 
@@ -103,7 +103,7 @@
                       Отчество:
                   </div>
                   <div class="col-8">
-                      <input asp-for="@Model.Visitor.Patronymic" class="form-control" type="text" />
+                      <input asp-for="@Model.Visitor.Patronymic" value="@Model.Visitor.Patronymic" class="form-control" type="text" />
                   </div>
               </div>
 
@@ -112,7 +112,7 @@
                       Телефон:
                   </div>
                   <div class="col-8">
-                      <input asp-for="@Model.Visitor.PhoneNumber" class="form-control" type="text" />
+                      <input asp-for="@Model.Visitor.PhoneNumber" value="@Model.Visitor.PhoneNumber" class="form-control" type="text" />
                   </div>
               </div>
 
@@ -121,7 +121,7 @@
                       Email*:
                   </div>
                   <div class="col-8">
-                      <input asp-for="@Model.Visitor.Email" class="form-control" type="text" />
+                      <input asp-for="@Model.Visitor.Email" value="@Model.Visitor.Email" class="form-control" type="text" />
                   </div>
               </div>
 
@@ -133,7 +133,7 @@
                       Организация:
                   </div>
                   <div class="col-8">
-                      <input asp-for="@Model.Visitor.Organisation" class="form-control" type="text"/>
+                      <input asp-for="@Model.Visitor.Organisation" value="@Model.Visitor.Organisation" class="form-control" type="text"/>
                   </div>
               </div>
 
@@ -142,7 +142,7 @@
                       Примечание*:
                   </div>
                   <div class="col-8">
-                      <input asp-for="@Model.Visitor.Note" class="form-control" type="text"/>
+                      <input asp-for="@Model.Visitor.Note" value="@Model.Visitor.Note" class="form-control" type="text"/>
                   </div>
               </div>
 
@@ -160,7 +160,7 @@
                       Серия*:
                   </div>
                   <div class="col-8">
-                      <input asp-for="@Model.Visitor.PassportSeries" class="form-control" type="text"/>
+                      <input asp-for="@Model.Visitor.PassportSeries" value="@Model.Visitor.PassportSeries" class="form-control" type="text"/>
                   </div>
               </div>
 
@@ -169,10 +169,10 @@
                       Номер*:
                   </div>
                   <div class="col-8">
-                      <input asp-for="@Model.Visitor.PassportNumber" class="form-control" type="text"/>
+                      <input asp-for="@Model.Visitor.PassportNumber" value="@Model.Visitor.PassportNumber" class="form-control" type="text"/>
                   </div>
               </div>
-              <input class="btn fontgrey small" type="submit" value="Добавить пользователя"/>
+              <input class="btn fontgrey small" type="submit" name="addvisitor" value="Добавить пользователя"/>
           </div>
 
           
@@ -201,7 +201,7 @@
                       @foreach (Visitor visitor in @Model.Visitors)
                       {
                       <tr>
-                        <th scope="row">@visitor.Id</th>
+                        <th scope="row">@visitor.Number</th>
                         <td>@visitor.Surname</td>
                         <td>@visitor.Email</td>
                         <td>@visitor.Photo</td>
@@ -227,7 +227,7 @@
     
     <div class="col-4">
       <div class="card-body">
-        <input class="btn fontgrey" type="submit" value="Очистить форму"/>
+        <input class="btn fontgrey" type="submit" name="cleanform" value="Очистить форму"/>
         <input type="submit" class="btn btn-outline-warning" name="filldata" value="Оформить заявку"/>
       </div>
       <label>@Model.Message</label>

@@ -10,7 +10,7 @@ namespace RequestsKeeper.Pages
         public string UserSession { get; set; }
         public void OnGet(string handler)
         {
-            User user = Session.GetVisitor(handler);
+            User user = Session.GetUser(handler);
             UserSession = handler;
         }
 

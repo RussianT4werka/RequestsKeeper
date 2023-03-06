@@ -24,7 +24,7 @@ namespace RequestsKeeper.Pages
 
         public void OnGet(string handler)
         {
-            User user = Session.GetVisitor(handler);
+            User user = Session.GetUser(handler);
             UserSession = handler;
             Requests = user502Context.Requests.Include(s => s.Worker).ThenInclude(s => s.SubDivision).Include(s => s.TypeRequest).Include(s => s.Status).Include(s => s.Users).ToList();
 

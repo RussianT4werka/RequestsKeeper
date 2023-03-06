@@ -9,9 +9,10 @@ namespace RequestsKeeper.Pages
 {
     public class CreateGroupRequestModel : PageModel
     {
-        public List<Visitor> Visitors { get; set; } = new List<Visitor>();
         [BindProperty]
         public Request Request { get; set; } = new Request();
+
+        public List<Visitor> Visitors { get; set; } = new List<Visitor>();
 
         [BindProperty]
         public Visitor Visitor { get; set; } = new Visitor();
@@ -41,18 +42,25 @@ namespace RequestsKeeper.Pages
         }
         public void OnGet(string handler)
         {
-            authUser = Session.GetVisitor(handler);
+            authUser = Session.GetUser(handler);
+            Session.RemoveVisitor(handler);
         }
 
-        public IActionResult OnPost(string handler, string filldata)
+        public IActionResult OnPost(string handler, string filldata, string addvisitor, string cleanform)
         {
-            if(filldata == null)
+            
+            authUser = Session.GetUser(handler);
+            WorkerList = new SelectList(user502Context.Workers.Where(s => s.SubDivisionId == SubDivisionId).ToList(), nameof(Worker.Id), nameof(Worker.Surname));
+            if(cleanform != null)
             {
-                WorkerList = new SelectList(user502Context.Workers.Where(s => s.SubDivisionId == SubDivisionId).ToList(), nameof(Worker.Id), nameof(Worker.Surname)); 
+                Visitor = new Visitor();
+                Request = new Request();
+                Session.RemoveVisitor(handler);
             }
-            authUser = Session.GetVisitor(handler);
-
-            if (string.IsNullOrEmpty(Visitor.Surname)
+            Visitors = Session.ReturnListVisitor(handler);
+            if (addvisitor != null)
+            {
+                if (string.IsNullOrEmpty(Visitor.Surname)
                 || string.IsNullOrEmpty(Visitor.Name)
                 || string.IsNullOrEmpty(Visitor.Email)
                 || !Visitor.Email.Contains('@')
@@ -61,29 +69,56 @@ namespace RequestsKeeper.Pages
                 || Visitor.PassportSeries.Length != 4
                 || string.IsNullOrEmpty(Visitor.PassportNumber)
                 || Visitor.PassportNumber.Length != 6
-                || string.IsNullOrEmpty(Visitor.Note)
-                || Request.StartDate.Day <= DateTime.Now.Day
+                || string.IsNullOrEmpty(Visitor.Note))
+                {
+                    Message = "Поля заполнены неверно";
+
+                    return null;
+                }
+                Visitor.UsersId = authUser.Id;
+                Visitor.Number = Visitors.Count+1;
+                Session.CreateGroupVisitor(handler, Visitor);
+                Visitor = new Visitor();
+                Visitors = Session.ReturnListVisitor(handler);
+                return null;
+            }
+            if (filldata != null)
+            {
+                if (Request.StartDate.Day <= DateTime.Now.Day
                 || Request.StartDate.Day > DateTime.Now.Day + 15
                 || Request.FinishDate.Day < Request.StartDate.Day
                 || Request.FinishDate.Day > Request.StartDate.Day + 15
                 || string.IsNullOrEmpty(Request.TargetVisit)
                 || WorkerId == 0
-                || base.Request.Form.Files.FirstOrDefault(s => s.ContentType == "application/pdf") == null)
-            {
-                Message = "Поля заполнены неверно";
+                || base.Request.Form.Files.FirstOrDefault(s => s.ContentType == "application/pdf") == null
+                || Visitors.Count < 5)
+                {
+                    Message = "Поля заявки заполнены неверно или вовсе не заполнены";
+                    return null;
+                }
 
-                return null;
+                Request.UsersId = authUser.Id;
+                Request.WorkerId = WorkerId;
+                Request.StatusId = 1;
+                Request.TypeRequestId = 2;
+                user502Context.Requests.Add(Request);
+                var lastIdRequest = user502Context.Requests.ToList().Last().Id;
+                user502Context.Visitors.AddRange(Visitors);
+                var visitors = user502Context.Visitors.ToList().TakeLast(Visitors.Count);
+                foreach(var visitor in visitors)
+                {
+                    user502Context.VisitorsRequests.Add(new VisitorsRequest { RequestId = lastIdRequest, VisitorsId = visitor.Id });
+                }
+
+                User user = user502Context.Users.ToList().First(s => s.Id == authUser.Id);
+                user502Context.Entry(user).CurrentValues.SetValues(authUser);
+                
+                user502Context.SaveChanges();
+
+                return RedirectToPage("SecondPage", handler);
             }
-            Request.UsersId = authUser.Id;
-            Request.WorkerId = WorkerId;
-            Request.StatusId = 1;
-            Request.TypeRequestId = 2;
-            authUser.Visitors.Add(Visitor);
-            User user = user502Context.Users.ToList().First(s => s.Id == authUser.Id);
-            user502Context.Entry(user).CurrentValues.SetValues(authUser);
-            user502Context.Requests.Add(Request);
-            user502Context.SaveChanges();
-            return RedirectToPage("SecondPage", handler);
+            return null;
+
         }
         private byte[] GetBytesFromFile(IFormFile file)
         {

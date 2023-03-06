@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace RequestsKeeper.Model;
 
@@ -38,4 +39,6 @@ public partial class Visitor
     public virtual ICollection<VisitorsRequest> VisitorsRequests { get; } = new List<VisitorsRequest>();
 
     public virtual ICollection<VisitorsVisit> VisitorsVisits { get; } = new List<VisitorsVisit>();
+    [NotMapped]
+    public int Number { get; set; }
 }

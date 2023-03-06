@@ -45,7 +45,7 @@ namespace RequestsKeeper.Pages
         }
         public void OnGet(string handler)
         {
-            authUser = Session.GetVisitor(handler);
+            authUser = Session.GetUser(handler);
         }
 
         public IActionResult OnPost(string handler, string filldata)
@@ -67,7 +67,7 @@ namespace RequestsKeeper.Pages
                 }
                 return null;
             }
-            authUser = Session.GetVisitor(handler);
+            authUser = Session.GetUser(handler);
             if (string.IsNullOrEmpty(Visitor.Surname) 
                 || string.IsNullOrEmpty(Visitor.Name) 
                 || string.IsNullOrEmpty(Visitor.Email) 
@@ -112,6 +112,12 @@ namespace RequestsKeeper.Pages
             User user = user502Context.Users.ToList().First(s => s.Id == authUser.Id);
             user502Context.Entry(user).CurrentValues.SetValues(authUser);
             user502Context.Requests.Add(Request);
+            var lastIdRequest = user502Context.Requests.ToList().Last().Id;
+            var lastIdVisitor = user502Context.Visitors.ToList().Last().Id;
+            var visitorsRequest = new VisitorsRequest();
+            visitorsRequest.RequestId = lastIdRequest;
+            visitorsRequest.VisitorsId = lastIdVisitor;
+            user502Context.VisitorsRequests.Add(visitorsRequest);
             user502Context.SaveChanges();
             return RedirectToPage("SecondPage", handler);
         }
