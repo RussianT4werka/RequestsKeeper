@@ -102,8 +102,9 @@ namespace RequestsKeeper.Pages
                 Request.StatusId = 1;
                 Request.TypeRequestId = 2;
                 user502Context.Requests.Add(Request);
-                var lastIdRequest = user502Context.Requests.ToList().Last().Id;
                 user502Context.Visitors.AddRange(Visitors);
+                user502Context.SaveChanges();
+                var lastIdRequest = user502Context.Requests.ToList().Last().Id;
                 var visitors = user502Context.Visitors.ToList().TakeLast(Visitors.Count);
                 foreach(var visitor in visitors)
                 {

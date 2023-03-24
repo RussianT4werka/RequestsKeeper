@@ -112,6 +112,7 @@ namespace RequestsKeeper.Pages
             User user = user502Context.Users.ToList().First(s => s.Id == authUser.Id);
             user502Context.Entry(user).CurrentValues.SetValues(authUser);
             user502Context.Requests.Add(Request);
+            user502Context.SaveChanges();
             var lastIdRequest = user502Context.Requests.ToList().Last().Id;
             var lastIdVisitor = user502Context.Visitors.ToList().Last().Id;
             var visitorsRequest = new VisitorsRequest();
